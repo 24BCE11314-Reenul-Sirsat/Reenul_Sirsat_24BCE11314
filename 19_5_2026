@@ -1,0 +1,288 @@
+CREATE DATABASE campushub;
+
+USE campushub;
+
+DROP TABLE IF EXISTS staff;
+
+CREATE TABLE Staff (
+    STAFF_ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    FNAME CHAR(25),
+    LNAME CHAR(25),
+    PAY INT(15),
+    JOIN_DATE DATETIME,
+    SECTION CHAR(25)
+);
+
+INSERT INTO Staff
+(STAFF_ID, FNAME, LNAME, PAY, JOIN_DATE, SECTION) VALUES
+(101, 'Arjun', 'Patel', 110000, '2015-03-10 09:00:00', 'IT'),
+(102, 'Diya', 'Sharma', 85000, '2015-06-15 09:00:00', 'Admin'),
+(103, 'Kabir', 'Joshi', 280000, '2015-03-10 09:00:00', 'IT'),
+(104, 'Neha', 'Kapoor', 470000, '2015-03-10 09:00:00', 'Admin'),
+(105, 'Rohan', 'Mishra', 490000, '2015-06-15 09:00:00', 'Admin'),
+(106, 'Pooja', 'Gupta', 190000, '2015-06-15 09:00:00', 'Finance'),
+(107, 'Manav', 'Jain', 78000, '2015-02-18 09:00:00', 'Finance'),
+(108, 'Tanvi', 'Roy', 95000, '2015-04-12 09:00:00', 'Admin');
+
+SELECT * FROM staff;
+
+SELECT * FROM staff
+WHERE pay > 150000;
+
+SELECT * FROM staff
+WHERE pay < 100000;
+
+SELECT * FROM staff
+WHERE pay BETWEEN 100000 AND 250000;
+
+SELECT * FROM staff
+WHERE pay NOT BETWEEN 100000 AND 250000;
+
+SELECT * FROM staff
+WHERE section IN ('IT','HR');
+
+SELECT * FROM staff
+WHERE section NOT IN ('IT','Admin');
+
+SELECT * FROM staff
+WHERE staff_id IN (101,103,105);
+
+SELECT * FROM staff
+WHERE staff_id NOT IN (102,104,106);
+
+SELECT fname, pay
+FROM staff
+WHERE pay > 100000;
+
+SELECT fname, section
+FROM staff
+WHERE section IN ('Finance','ECE');
+
+SELECT * FROM staff
+WHERE pay BETWEEN 70000 AND 180000
+AND section NOT IN ('Admin');
+
+SELECT * FROM staff
+WHERE pay > 90000
+AND pay < 300000;
+
+CREATE DATABASE collegezone;
+
+USE collegezone;
+
+DROP TABLE IF EXISTS staff;
+
+CREATE TABLE Staff (
+    STAFF_ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    FNAME CHAR(25),
+    LNAME CHAR(25),
+    PAY INT(15),
+    JOIN_DATE DATETIME,
+    SECTION CHAR(25)
+);
+
+INSERT INTO Staff
+(STAFF_ID, FNAME, LNAME, PAY, JOIN_DATE, SECTION) VALUES
+(201, 'Aditya', 'Verma', 120000, '2016-01-12 09:00:00', 'IT'),
+(202, 'Ritika', 'Patel', 82000, '2016-05-20 09:00:00', 'Admin'),
+(203, 'Vansh', 'Shah', 310000, '2016-02-18 09:00:00', 'HR'),
+(204, 'Aanya', 'Kapoor', 450000, '2016-02-18 09:00:00', 'Admin'),
+(205, 'Kiran', 'Mehta', 470000, '2016-05-20 09:00:00', 'Admin'),
+(206, 'Ravi', 'Nair', 210000, '2016-05-20 09:00:00', 'Finance'),
+(207, 'Nitin', 'Das', 76000, '2016-03-10 09:00:00', 'Finance'),
+(208, 'Simran', 'Sen', 92000, '2016-04-14 09:00:00', 'Admin');
+
+SELECT * FROM Staff
+WHERE FNAME LIKE 'V%';
+
+SELECT * FROM Staff
+WHERE FNAME LIKE '%a';
+
+SELECT * FROM Staff
+WHERE FNAME LIKE '%h%';
+
+SELECT * FROM Staff
+WHERE FNAME LIKE '_i%';
+
+SELECT * FROM Staff
+WHERE FNAME LIKE '__t%';
+
+SELECT * FROM Staff
+WHERE FNAME LIKE 'A%';
+
+SELECT * FROM Staff
+WHERE FNAME LIKE '%n';
+
+SELECT * FROM Staff
+WHERE FNAME LIKE '_____';
+
+SELECT * FROM Staff
+WHERE SECTION LIKE 'A%';
+
+SELECT * FROM Staff
+WHERE SECTION LIKE '%n';
+
+SELECT * FROM Staff
+WHERE SECTION LIKE '_R';
+
+SELECT * FROM Staff
+WHERE FNAME NOT LIKE 'V%';
+
+SELECT * FROM Staff
+WHERE SECTION NOT LIKE 'I%';
+
+SELECT * FROM Staff
+WHERE FNAME LIKE '%i%';
+
+SELECT * FROM Staff
+WHERE FNAME LIKE 'A%a';
+
+CREATE DATABASE employeehub;
+
+USE employeehub;
+
+DROP TABLE IF EXISTS staff;
+
+CREATE TABLE Staff (
+    STAFF_ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    FNAME CHAR(25),
+    LNAME CHAR(25),
+    PAY INT(15),
+    JOIN_DATE DATETIME,
+    SECTION CHAR(25)
+);
+
+INSERT INTO Staff VALUES
+(301,'Isha','Rana',95000,'2017-01-15 09:00:00','IT'),
+(302,'Dev','Malhotra',85000,'2017-03-10 09:00:00','Admin'),
+(303,'Aryan','Kapoor',290000,'2017-04-18 09:00:00','HR'),
+(304,'Pallavi','Sharma',510000,'2017-05-20 09:00:00','Admin'),
+(305,'Sahil','Jain',480000,'2017-06-11 09:00:00','Admin'),
+(306,'Nisha','Roy',210000,'2017-06-11 09:00:00','Finance'),
+(307,'Kunal','Patel',78000,'2017-02-18 09:00:00','Finance'),
+(308,'Maya','Sen',91000,'2017-04-12 09:00:00','Admin');
+
+SELECT * FROM staff;
+
+SELECT COUNT(*) AS total_staff FROM staff;
+
+SELECT SUM(pay) AS total_pay FROM staff;
+
+SELECT AVG(pay) AS average_pay FROM staff;
+
+SELECT MAX(pay) AS highest_pay FROM staff;
+
+SELECT MIN(pay) AS lowest_pay FROM staff;
+
+SELECT COUNT(section) AS total_sections FROM staff;
+
+SELECT COUNT(DISTINCT section) AS unique_sections FROM staff;
+
+CREATE DATABASE officehub;
+
+USE officehub;
+
+DROP TABLE IF EXISTS staff;
+
+CREATE TABLE Staff (
+    STAFF_ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    FNAME CHAR(25),
+    LNAME CHAR(25),
+    PAY INT(15),
+    JOIN_DATE DATETIME,
+    SECTION CHAR(25)
+);
+
+INSERT INTO Staff VALUES
+(401,'Rohan','Patel',105000,'2018-02-10 09:00:00','IT'),
+(402,'Meera','Shah',88000,'2018-04-18 09:00:00','Admin'),
+(403,'Yash','Kapoor',320000,'2018-03-15 09:00:00','HR'),
+(404,'Aditi','Verma',520000,'2018-05-12 09:00:00','Admin'),
+(405,'Ritik','Das',470000,'2018-06-11 09:00:00','Admin'),
+(406,'Tina','Roy',220000,'2018-06-11 09:00:00','Finance'),
+(407,'Naman','Jain',70000,'2018-01-15 09:00:00','Finance'),
+(408,'Ira','Sen',98000,'2018-04-12 09:00:00','Admin');
+
+SELECT staff_id, fname, pay,
+CASE
+    WHEN pay > 300000 THEN 'Premium'
+    WHEN pay BETWEEN 100000 AND 300000 THEN 'Standard'
+    ELSE 'Basic'
+END AS category
+FROM Staff;
+
+CREATE DATABASE workzone;
+
+USE workzone;
+
+DROP TABLE IF EXISTS staff;
+
+CREATE TABLE Staff (
+    STAFF_ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    FNAME CHAR(25),
+    LNAME CHAR(25),
+    PAY INT(15),
+    JOIN_DATE DATETIME,
+    SECTION CHAR(25)
+);
+
+INSERT INTO Staff VALUES
+(501,'Karan','Mehta',100000,'2019-02-20 09:00:00','IT'),
+(502,'Sneha','Patel',82000,'2019-05-15 09:00:00','Admin'),
+(503,'Aditya','Roy',310000,'2019-03-12 09:00:00','HR'),
+(504,'Tanisha','Kapoor',510000,'2019-04-18 09:00:00','Admin'),
+(505,'Dev','Jain',490000,'2019-06-11 09:00:00','Admin'),
+(506,'Mihir','Das',200000,'2019-06-11 09:00:00','Finance'),
+(507,'Riya','Sen',76000,'2019-01-18 09:00:00','Finance'),
+(508,'Anaya','Shah',93000,'2019-04-12 09:00:00','Admin');
+
+SELECT * FROM Staff;
+
+SELECT * FROM Staff
+WHERE FNAME LIKE '_i__a_';
+
+SELECT PAY
+FROM Staff
+WHERE SECTION = 'Admin';
+
+SELECT PAY FROM Staff
+UNION ALL
+SELECT PAY FROM Staff;
+
+SELECT * FROM Staff;
+
+SELECT STAFF_ID AS EmployeeNumber
+FROM Staff;
+
+SELECT DISTINCT(SECTION)
+FROM Staff;
+
+SELECT STAFF_ID, FNAME, PAY,
+CASE
+    WHEN PAY > 300000 THEN 'Premium'
+    WHEN PAY >= 100000 AND PAY <= 299999 THEN 'Regular'
+    ELSE 'Basic'
+END AS Category
+FROM Staff;
+
+SELECT MIN(PAY)
+FROM Staff
+WHERE SECTION = 'Admin';
+
+SELECT MAX(PAY)
+FROM Staff
+WHERE SECTION = 'Admin';
+
+CREATE VIEW minPayAdmin AS
+SELECT MIN(PAY) AS MinimumPay
+FROM Staff
+WHERE SECTION = 'Admin';
+
+CREATE VIEW maxPayAdmin AS
+SELECT MAX(PAY) AS MaximumPay
+FROM Staff
+WHERE SECTION = 'Admin';
+
+SELECT * FROM minPayAdmin;
+
+SELECT * FROM maxPayAdmin;
