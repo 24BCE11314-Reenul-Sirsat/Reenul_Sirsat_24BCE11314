@@ -1,0 +1,103 @@
+USE vitbhopal;
+
+SHOW TABLES;
+
+SELECT *
+FROM worker;
+
+-- Employees from HR and Admin departments sorted by salary
+SELECT First_name, Department, Salary
+FROM worker
+WHERE Department IN ('HR', 'Admin')
+ORDER BY Salary;
+
+-- Total salary paid department-wise
+SELECT Department,
+       SUM(Salary) AS Total_Salary
+FROM worker
+GROUP BY Department;
+
+-- Employees earning more than 100000 sorted by joining date
+SELECT First_name,
+       Department,
+       Joining_Date
+FROM worker
+WHERE Salary > 100000
+ORDER BY Joining_Date ASC;
+
+-- Average salary of each department
+SELECT Department,
+       AVG(Salary) AS Average_Salary
+FROM worker
+GROUP BY Department
+ORDER BY Department;
+
+-- Number of employees in every department
+SELECT Department,
+       COUNT(*) AS Employee_Count
+FROM worker
+GROUP BY Department;
+
+-- Departments whose total salary is at most 300000
+SELECT Department,
+       SUM(Salary) AS Salary_Total
+FROM worker
+GROUP BY Department
+HAVING SUM(Salary) <= 300000;
+
+-- Display 2 records after skipping first 3
+SELECT *
+FROM worker
+LIMIT 3, 2;
+
+SELECT *
+FROM toppers;
+
+-- Workers whose IDs are present in toppers table
+SELECT Worker_ID,
+       First_Name,
+       Department
+FROM worker
+WHERE Worker_ID IN
+      (SELECT ID FROM toppers);
+
+SELECT *
+FROM worker;
+
+-- Two departments with the lowest total salary expenditure
+SELECT SUM(Salary) AS Total_Salary,
+       Department
+FROM worker
+GROUP BY Department
+ORDER BY Total_Salary
+LIMIT 2;
+
+-- Second highest salary in Admin department
+SELECT First_Name,
+       Salary
+FROM worker
+WHERE Department = 'Admin'
+ORDER BY Salary DESC
+LIMIT 1 OFFSET 1;
+
+-- Employees from HR, Admin and Account departments
+SELECT First_Name,
+       Department,
+       Salary
+FROM worker
+WHERE Department IN ('HR', 'Admin', 'Account')
+ORDER BY Salary DESC;
+
+-- Second highest salary employee from each department
+SELECT w1.First_Name,
+       w1.Department,
+       w1.Salary
+FROM worker w1
+WHERE w1.Salary =
+(
+    SELECT DISTINCT w2.Salary
+    FROM worker w2
+    WHERE w2.Department = w1.Department
+    ORDER BY w2.Salary DESC
+    LIMIT 1 OFFSET 1
+);
