@@ -1,0 +1,322 @@
+use vit
+
+db.gadgets.drop()
+
+db.gadgets.insertMany([
+{
+    _id: 101,
+    name: "AlphaPhone",
+    price: 799,
+    releaseDate: ISODate("2011-05-14"),
+    spec: { cpu: 2.66, ram: 4, screen: 6.5 },
+    colors: ["white","black"],
+    storage: [64,128,256]
+},
+{
+    _id: 102,
+    name: "AlphaTab",
+    price: 899,
+    releaseDate: ISODate("2011-09-01"),
+    spec: { cpu: 3.66, ram: 16, screen: 9.5 },
+    colors: ["white","black","purple"],
+    storage: [128,256,512]
+},
+{
+    _id: 103,
+    name: "MegaTab",
+    price: 899,
+    releaseDate: ISODate("2015-01-14"),
+    spec: { cpu: 3.66, ram: 12, screen: 9.7 },
+    colors: ["blue"],
+    storage: [16,64,128]
+},
+{
+    _id: 104,
+    name: "MegaPad",
+    price: 699,
+    releaseDate: ISODate("2020-05-14"),
+    spec: { cpu: 1.66, ram: 8, screen: 9.7 },
+    colors: ["white","orange","gold","gray"],
+    storage: [128,256,1024]
+},
+{
+    _id: 105,
+    name: "MegaPhone",
+    price: 599,
+    releaseDate: ISODate("2022-09-14"),
+    spec: { cpu: 1.66, ram: 4, screen: 5.7 },
+    colors: ["white","orange","gold","gray"],
+    storage: [128,256]
+}
+])
+
+// UPDATE ONE USING $SET
+
+db.gadgets.updateOne(
+    { _id: 101 },
+    { $set: { price: 899 } }
+)
+
+db.gadgets.find(
+    { price: 899 },
+    { _id: 0, name: 1, price: 1 }
+)
+
+// UPDATE FIRST MATCHING DOCUMENT
+
+db.gadgets.updateOne(
+    { price: 899 },
+    { $set: { price: null } }
+)
+
+db.gadgets.find(
+    { _id: 101 },
+    { _id: 0, name: 1, price: 1 }
+)
+
+// UPDATE EMBEDDED DOCUMENT
+
+db.gadgets.find(
+    { _id: 104 },
+    { _id: 0, name: 1, spec: 1 }
+)
+
+db.gadgets.updateOne(
+    { _id: 104 },
+    {
+        $set: {
+            "spec.ram": 16,
+            "spec.screen": 10.7,
+            "spec.cpu": 2.66
+        }
+    }
+)
+
+db.gadgets.find(
+    { _id: 104 },
+    { _id: 0, name: 1, spec: 1 }
+)
+
+// UPDATE ARRAY VALUES
+
+db.gadgets.updateOne(
+    { _id: 104 },
+    {
+        $set: {
+            "storage.0": 16,
+            "storage.1": 32
+        }
+    }
+)
+
+db.gadgets.find(
+    { _id: 104 },
+    { _id: 0, name: 1, storage: 1 }
+)
+
+// RESET COLLECTION
+
+db.gadgets.drop()
+
+db.gadgets.insertMany([
+{
+    _id: 101,
+    name: "AlphaPhone",
+    price: 799,
+    releaseDate: ISODate("2011-05-14"),
+    spec: { cpu: 2.66, ram: 4, screen: 6.5 },
+    colors: ["white","black"],
+    storage: [64,128,256]
+},
+{
+    _id: 102,
+    name: "AlphaTab",
+    price: 899,
+    releaseDate: ISODate("2011-09-01"),
+    spec: { cpu: 3.66, ram: 16, screen: 9.5 },
+    colors: ["white","black","purple"],
+    storage: [128,256,512]
+},
+{
+    _id: 103,
+    name: "MegaTab",
+    price: 899,
+    releaseDate: ISODate("2015-01-14"),
+    spec: { cpu: 3.66, ram: 12, screen: 9.7 },
+    colors: ["blue"],
+    storage: [16,64,128]
+},
+{
+    _id: 104,
+    name: "MegaPad",
+    price: 699,
+    releaseDate: ISODate("2020-05-14"),
+    spec: { cpu: 1.66, ram: 8, screen: 9.7 },
+    colors: ["white","orange","gold","gray"],
+    storage: [128,256,1024]
+},
+{
+    _id: 105,
+    name: "MegaPhone",
+    price: 599,
+    releaseDate: ISODate("2022-09-14"),
+    spec: { cpu: 1.66, ram: 4, screen: 5.7 },
+    colors: ["white","orange","gold","gray"],
+    storage: [128,256]
+}
+])
+
+// UPDATE MANY
+
+db.gadgets.updateMany(
+    { price: 899 },
+    { $set: { price: 895 } }
+)
+
+db.gadgets.find(
+    { price: 895 },
+    { _id: 0, name: 1, price: 1 }
+)
+
+// UPDATE NESTED FIELDS IN MULTIPLE DOCUMENTS
+
+db.gadgets.updateMany(
+    { price: { $gt: 700 } },
+    {
+        $set: {
+            "spec.ram": 32,
+            "spec.screen": 9.8,
+            "spec.cpu": 5.66
+        }
+    }
+)
+
+// UPDATE ARRAY ELEMENTS IN MULTIPLE DOCUMENTS
+
+db.gadgets.updateMany(
+    { _id: { $in: [101,102,103] } },
+    {
+        $set: {
+            "storage.0": 16,
+            "storage.1": 32
+        }
+    }
+)
+
+db.gadgets.find(
+    { _id: { $in: [101,102,103] } },
+    { _id: 0, name: 1, storage: 1 }
+)
+
+// RESET COLLECTION AGAIN
+
+db.gadgets.drop()
+
+db.gadgets.insertMany([
+{
+    _id: 101,
+    name: "AlphaPhone",
+    price: 799,
+    releaseDate: ISODate("2011-05-14"),
+    spec: { cpu: 2.66, ram: 4, screen: 6.5 },
+    colors: ["white","black"],
+    storage: [64,128,256]
+},
+{
+    _id: 102,
+    name: "AlphaTab",
+    price: 899,
+    releaseDate: ISODate("2011-09-01"),
+    spec: { cpu: 3.66, ram: 16, screen: 9.5 },
+    colors: ["white","black","purple"],
+    storage: [128,256,512]
+},
+{
+    _id: 103,
+    name: "MegaTab",
+    price: 899,
+    releaseDate: ISODate("2015-01-14"),
+    spec: { cpu: 3.66, ram: 12, screen: 9.7 },
+    colors: ["blue"],
+    storage: [16,64,128]
+},
+{
+    _id: 104,
+    name: "MegaPad",
+    price: 699,
+    releaseDate: ISODate("2020-05-14"),
+    spec: { cpu: 1.66, ram: 8, screen: 9.7 },
+    colors: ["white","orange","gold","gray"],
+    storage: [128,256,1024]
+},
+{
+    _id: 105,
+    name: "MegaPhone",
+    price: 599,
+    releaseDate: ISODate("2022-09-14"),
+    spec: { cpu: 1.66, ram: 4, screen: 5.7 },
+    colors: ["white","orange","gold","gray"],
+    storage: [128,256]
+}
+])
+
+// $INC OPERATOR
+
+db.gadgets.updateOne(
+    { _id: 101 },
+    { $inc: { price: 50 } }
+)
+
+db.gadgets.updateOne(
+    { _id: 101 },
+    { $inc: { price: -150 } }
+)
+
+db.gadgets.updateOne(
+    { _id: 101 },
+    {
+        $inc: {
+            price: 50,
+            "spec.ram": 4
+        }
+    }
+)
+
+db.gadgets.find(
+    { _id: 101 },
+    { _id: 0, name: 1, price: 1, "spec.ram": 1 }
+)
+
+// $MIN OPERATOR
+
+db.gadgets.updateOne(
+    { _id: 105 },
+    { $min: { price: 699 } }
+)
+
+db.gadgets.updateOne(
+    { _id: 105 },
+    { $min: { price: 499 } }
+)
+
+db.gadgets.find(
+    { _id: 105 },
+    { _id: 0, name: 1, price: 1 }
+)
+
+// $MAX OPERATOR
+
+db.gadgets.updateOne(
+    { _id: 101 },
+    { $max: { price: 699 } }
+)
+
+db.gadgets.updateOne(
+    { _id: 101 },
+    { $max: { price: 899 } }
+)
+
+db.gadgets.find(
+    { _id: 101 },
+    { _id: 0, name: 1, price: 1 }
+)
