@@ -1,0 +1,240 @@
+// Select Database
+use("vit");
+
+// Recreate Collection
+db.products.drop();
+
+// Insert Documents
+db.products.insertMany([
+{
+    _id: 101,
+    name: "xPhone",
+    price: 799,
+    releaseDate: ISODate("2011-05-14"),
+    spec: { cpu: 2.66, ram: 4, screen: 6.5 },
+    color: ["white", "black"],
+    storage: [64, 128, 256]
+},
+{
+    _id: 102,
+    name: "xTablet",
+    price: 899,
+    releaseDate: ISODate("2011-09-01"),
+    spec: { cpu: 3.66, ram: 16, screen: 9.5 },
+    color: ["white", "black", "purple"],
+    storage: [128, 256, 512]
+},
+{
+    _id: 103,
+    name: "SmartTablet",
+    price: 899,
+    releaseDate: ISODate("2015-01-14"),
+    spec: { cpu: 3.66, ram: 12, screen: 9.7 },
+    color: ["blue"],
+    storage: [16, 64, 128]
+},
+{
+    _id: 104,
+    name: "SmartPad",
+    price: 699,
+    releaseDate: ISODate("2020-05-14"),
+    spec: { cpu: 1.66, ram: 8, screen: 9.7 },
+    color: ["white", "orange", "gold", "gray"],
+    storage: [128, 256, 1024]
+},
+{
+    _id: 105,
+    name: "SmartPhone",
+    price: 599,
+    releaseDate: ISODate("2022-09-14"),
+    spec: { cpu: 1.66, ram: 4, screen: 9.7 },
+    color: ["white", "orange", "gold", "gray"],
+    storage: [128, 256]
+},
+{
+    _id: 106,
+    name: "xWidget",
+    spec: { cpu: 3.66, ram: 64, screen: 9.7 },
+    color: ["black"],
+    storage: [1024]
+}
+]);
+
+// Price >= 799
+db.products.find(
+    { price: { $gte: 799 } },
+    { _id: 0, name: 1, price: 1 }
+);
+
+// Screen size >= 9.5
+db.products.find(
+    { "spec.screen": { $gte: 9.5 } },
+    { _id: 0, name: 1, "spec.screen": 1 }
+);
+
+// Storage contains value >= 512
+db.products.find(
+    { storage: { $gte: 512 } },
+    { _id: 0, name: 1, storage: 1 }
+);
+
+// Released on or after 14-May-2020
+db.products.find(
+    { releaseDate: { $gte: ISODate("2020-05-14") } },
+    { _id: 0, name: 1, releaseDate: 1 }
+);
+
+// Price not equal to 899
+db.products.find(
+    { price: { $ne: 899 } },
+    { _id: 0, name: 1, price: 1 }
+);
+
+// Screen size not equal to 9.7
+db.products.find(
+    { "spec.screen": { $ne: 9.7 } },
+    { _id: 0, name: 1, "spec.screen": 1 }
+);
+
+// Release date not equal to 14-Jan-2015
+db.products.find(
+    { releaseDate: { $ne: ISODate("2015-01-14") } },
+    { _id: 0, name: 1, releaseDate: 1 }
+);
+
+// Price either 699 or 799
+db.products.find(
+    { price: { $in: [699, 799] } },
+    { _id: 0, name: 1, price: 1 }
+);
+
+// Products having white or black color
+db.products.find(
+    { color: { $in: ["white", "black"] } },
+    { _id: 0, name: 1, color: 1 }
+);
+
+// Colors beginning with g or w
+db.products.find(
+    { color: { $in: [/^g/i, /^w/i] } },
+    { _id: 0, name: 1, color: 1 }
+);
+
+// Price not in 699 and 799
+db.products.find(
+    { price: { $nin: [699, 799] } },
+    { _id: 0, name: 1, price: 1 }
+);
+
+// Colors excluding black and white
+db.products.find(
+    { color: { $nin: ["black", "white"] } },
+    { _id: 0, name: 1, color: 1 }
+);
+
+// Colors not starting with g or w
+db.products.find(
+    { color: { $nin: [/^g/i, /^w/i] } },
+    { _id: 0, name: 1, color: 1 }
+);
+
+// Price = 899 AND color contains white or black
+db.products.find(
+    {
+        price: 899,
+        color: { $in: ["white", "black"] }
+    },
+    {
+        _id: 0,
+        name: 1,
+        price: 1,
+        color: 1
+    }
+);
+
+// Price = 699 and field exists
+db.products.find(
+    {
+        price: {
+            $eq: 699,
+            $exists: true
+        }
+    },
+    {
+        _id: 0,
+        name: 1,
+        price: 1
+    }
+);
+
+// Price either 799 or 899
+db.products.find(
+    {
+        price: {
+            $in: [799, 899]
+        }
+    },
+    {
+        _id: 0,
+        name: 1,
+        price: 1
+    }
+);
+
+// Price less than 699 OR greater than 799
+db.products.find(
+    {
+        $or: [
+            { price: { $lt: 699 } },
+            { price: { $gt: 799 } }
+        ]
+    },
+    {
+        _id: 0,
+        name: 1,
+        price: 1
+    }
+);
+
+// NOT greater than 699
+db.products.find(
+    {
+        price: {
+            $not: { $gt: 699 }
+        }
+    },
+    {
+        _id: 0,
+        name: 1,
+        price: 1
+    }
+);
+
+// Name does not start with Smart
+db.products.find(
+    {
+        name: {
+            $not: /^Smart/
+        }
+    },
+    {
+        _id: 0,
+        name: 1
+    }
+);
+
+// NOR condition
+db.products.find(
+    {
+        $nor: [
+            { price: 899 },
+            { color: "gold" }
+        ]
+    },
+    {
+        _id: 0,
+        name: 1,
+        price: 1,
+        color: 1
+    }
+);
