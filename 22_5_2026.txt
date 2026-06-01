@@ -1,0 +1,78 @@
+USE vitcampus;
+
+DROP TABLE IF EXISTS FacultyHeads;
+DROP TABLE IF EXISTS AcademicDepartments;
+
+CREATE TABLE AcademicDepartments (
+    dept_id INT PRIMARY KEY,
+    dept_name VARCHAR(25) NOT NULL UNIQUE
+);
+
+INSERT INTO AcademicDepartments VALUES
+(201, 'IT'),
+(202, 'EEE'),
+(203, 'Chemical'),
+(206, 'Biotech'),
+(207, 'Automobile');
+
+SELECT *
+FROM AcademicDepartments
+ORDER BY dept_id;
+
+CREATE TABLE FacultyHeads (
+    head_id INT PRIMARY KEY,
+    head_name VARCHAR(20) NOT NULL UNIQUE
+);
+
+INSERT INTO FacultyHeads VALUES
+(201, 'Ramesh'),
+(202, 'Suresh'),
+(204, 'Mahesh'),
+(205, 'Naresh');
+
+SELECT *
+FROM FacultyHeads;
+
+-- Cartesian Product
+SELECT *
+FROM AcademicDepartments AD
+CROSS JOIN FacultyHeads FH
+ORDER BY AD.dept_id;
+
+-- Matching Records
+SELECT *
+FROM AcademicDepartments AD
+INNER JOIN FacultyHeads FH
+ON AD.dept_id = FH.head_id;
+
+-- Natural Join
+SELECT *
+FROM AcademicDepartments
+NATURAL JOIN FacultyHeads;
+
+-- Left Outer Join
+SELECT *
+FROM AcademicDepartments AD
+LEFT JOIN FacultyHeads FH
+ON AD.dept_id = FH.head_id
+ORDER BY AD.dept_id;
+
+-- Right Outer Join
+SELECT *
+FROM AcademicDepartments AD
+RIGHT JOIN FacultyHeads FH
+ON AD.dept_id = FH.head_id
+ORDER BY FH.head_id;
+
+-- Full Outer Join (using UNION)
+SELECT *
+FROM AcademicDepartments AD
+LEFT JOIN FacultyHeads FH
+ON AD.dept_id = FH.head_id
+
+UNION
+
+SELECT *
+FROM AcademicDepartments AD
+RIGHT JOIN FacultyHeads FH
+ON AD.dept_id = FH.head_id;
