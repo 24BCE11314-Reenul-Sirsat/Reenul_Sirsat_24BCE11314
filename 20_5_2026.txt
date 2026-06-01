@@ -1,0 +1,146 @@
+/* ==========================
+   TASK 1
+   ========================== */
+
+USE vitcampus;
+
+DROP TABLE IF EXISTS Citizens;
+
+CREATE TABLE Citizens (
+    CitizenID INT PRIMARY KEY NOT NULL,
+    FamilyName VARCHAR(255) NOT NULL UNIQUE,
+    GivenName VARCHAR(255) NOT NULL,
+    AgeYears INT CHECK (AgeYears >= 18),
+    ResidenceCity VARCHAR(100) DEFAULT 'Ahmedabad'
+);
+
+DESC Citizens;
+
+INSERT INTO Citizens (CitizenID, FamilyName, GivenName, AgeYears)
+VALUES
+(11, 'Joshi', 'Aman', 20);
+
+INSERT INTO Citizens (CitizenID, FamilyName, GivenName, AgeYears, ResidenceCity)
+VALUES
+(12, 'Kapoor', 'Neha', 23, 'Pune');
+
+INSERT INTO Citizens (CitizenID, FamilyName, GivenName, AgeYears)
+VALUES
+(13, 'Malik', 'Riya', 24);
+
+SELECT * FROM Citizens;
+
+ALTER TABLE Citizens
+ADD CONSTRAINT age_validation
+CHECK (AgeYears >= 18);
+
+ALTER TABLE Citizens
+MODIFY GivenName VARCHAR(255) NOT NULL;
+
+ALTER TABLE Citizens
+ADD CONSTRAINT city_unique UNIQUE (ResidenceCity);
+
+ALTER TABLE Citizens
+DROP INDEX city_unique;
+
+ALTER TABLE Citizens
+ADD ContactMail VARCHAR(100) UNIQUE;
+
+ALTER TABLE Citizens
+ADD NationName VARCHAR(50) DEFAULT 'India';
+
+SELECT * FROM Citizens;
+
+UPDATE Citizens
+SET ResidenceCity = 'Jaipur'
+WHERE CitizenID = 11;
+
+DELETE FROM Citizens
+WHERE CitizenID = 13;
+
+DESC Citizens;
+
+
+/* ==========================
+   TASK 2
+   ========================== */
+
+USE vitcampus;
+
+DROP TABLE IF EXISTS Learners;
+
+CREATE TABLE Learners (
+    learner_no INT,
+    learner_name VARCHAR(50),
+    learner_email VARCHAR(100)
+);
+
+DESC Learners;
+
+ALTER TABLE Learners
+ADD CONSTRAINT pk_learner_no
+PRIMARY KEY (learner_no);
+
+DESC Learners;
+
+ALTER TABLE Learners
+DROP PRIMARY KEY;
+
+DESC Learners;
+
+ALTER TABLE Learners
+ADD CONSTRAINT pk_learner_email
+PRIMARY KEY (learner_email);
+
+DESC Learners;
+
+
+/* ==========================
+   TASK 3
+   ========================== */
+
+USE vitcampus;
+
+DROP TABLE IF EXISTS Items;
+DROP TABLE IF EXISTS Departments;
+
+CREATE TABLE Departments (
+    dept_id INT PRIMARY KEY,
+    dept_title VARCHAR(100) NOT NULL
+);
+
+INSERT INTO Departments VALUES
+(201, 'Electronics'),
+(202, 'Home Appliances');
+
+SELECT * FROM Departments;
+
+CREATE TABLE Items (
+    item_code INT PRIMARY KEY,
+    item_title VARCHAR(100) NOT NULL,
+    dept_id INT,
+    CONSTRAINT fk_department
+    FOREIGN KEY (dept_id)
+    REFERENCES Departments(dept_id)
+);
+
+DESC Items;
+
+INSERT INTO Items VALUES
+(701, 'Vivo Smartphone', 201),
+(702, 'Godrej Refrigerator', 202),
+(703, 'Noise Earbuds', 201);
+
+SELECT * FROM Items;
+
+DELETE FROM Departments
+WHERE dept_id = 201;
+
+UPDATE Items
+SET item_title = 'Vivo Power Bank'
+WHERE item_code = 701;
+
+INSERT INTO Items VALUES
+(704, 'Portable Charger', 201);
+
+SELECT * FROM Items;
