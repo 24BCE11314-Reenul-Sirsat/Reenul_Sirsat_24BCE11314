@@ -1,0 +1,167 @@
+```mongodb
+// Select database
+use vit
+
+// Insert product documents
+db.getCollection("products").insertMany([
+{
+    _id: 101,
+    name: "xPhone",
+    price: 799,
+    releaseDate: ISODate("2011-05-14"),
+    spec: { cpu: 2.66, ram: 4, screen: 6.5 },
+    color: ["white", "black"],
+    storage: [64, 128, 256]
+},
+{
+    _id: 102,
+    name: "xTablet",
+    price: 899,
+    releaseDate: ISODate("2011-09-01"),
+    spec: { cpu: 3.66, ram: 16, screen: 9.5 },
+    color: ["white", "black", "purple"],
+    storage: [128, 256, 512]
+},
+{
+    _id: 103,
+    name: "SmartTablet",
+    price: 899,
+    releaseDate: ISODate("2015-01-14"),
+    spec: { cpu: 3.66, ram: 12, screen: 9.7 },
+    color: ["blue"],
+    storage: [16, 64, 128]
+},
+{
+    _id: 104,
+    name: "SmartPad",
+    price: 699,
+    releaseDate: ISODate("2020-05-14"),
+    spec: { cpu: 1.66, ram: 8, screen: 9.7 },
+    color: ["white", "orange", "gold", "gray"],
+    storage: [128, 256, 1024]
+},
+{
+    _id: 105,
+    name: "SmartPhone",
+    price: 599,
+    releaseDate: ISODate("2022-09-14"),
+    spec: { cpu: 1.66, ram: 4, screen: 5.7 },
+    color: ["white", "orange", "gold", "gray"],
+    storage: [128, 256]
+}
+]);
+
+// Display all collections
+show collections
+
+// Retrieve all products
+db.products.find().pretty();
+
+// Retrieve selected fields
+db.products.find(
+    {},
+    {
+        name: 1,
+        price: 1
+    }
+);
+
+// Display CPU specification only
+db.products.find(
+    {},
+    {
+        _id: 0,
+        "spec.cpu": 1
+    }
+);
+
+// Find product by id
+db.products.findOne(
+    { _id: 105 }
+);
+
+// Show only product name
+db.products.findOne(
+    { _id: 105 },
+    { _id: 0, name: 1 }
+);
+
+// Exclude product name
+db.products.findOne(
+    { _id: 105 },
+    { name: 0 }
+);
+
+// Extract storage values using slice
+db.products.find(
+    {},
+    {
+        _id: 0,
+        name: 1,
+        storage: { $slice: [1, 1] }
+    }
+);
+
+db.products.find(
+    {},
+    {
+        _id: 0,
+        name: 1,
+        storage: { $slice: [1, 2] }
+    }
+);
+
+// Products priced at 899
+db.products.find(
+    { price: 899 },
+    {
+        name: 1,
+        price: 1
+    }
+);
+
+// Products available in black color
+db.products.find(
+    { color: "black" },
+    {
+        name: 1,
+        color: 1
+    }
+);
+
+// Products with 4 GB RAM
+db.products.find(
+    { "spec.ram": 4 },
+    {
+        name: 1,
+        "spec.ram": 1
+    }
+);
+
+// Products cheaper than 799
+db.products.find(
+    { price: { $lt: 799 } },
+    {
+        name: 1,
+        price: 1
+    }
+);
+
+// Products having storage values below 128
+db.products.find(
+    { storage: { $lt: 128 } },
+    {
+        name: 1,
+        storage: 1
+    }
+);
+
+// Products with screen size less than 7 inches
+db.products.find(
+    { "spec.screen": { $lt: 7 } },
+    {
+        name: 1,
+        "spec.screen": 1
+    }
+);
+```
