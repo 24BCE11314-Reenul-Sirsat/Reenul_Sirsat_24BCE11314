@@ -1,0 +1,245 @@
+/* Q1 - Employee Name, Designation and Department */
+
+SELECT emp.name AS Employee_Name,
+       jb.job_title,
+       dept.dept_name
+FROM Departments dept
+INNER JOIN Employees emp
+       ON dept.dept_id = emp.dept_id
+INNER JOIN Jobs jb
+       ON emp.job_id = jb.job_id;
+
+
+/* Q2 - Employees earning above average salary of IT department */
+
+SELECT name,
+       salary
+FROM Employees
+WHERE salary >
+(
+    SELECT AVG(salary)
+    FROM Employees
+    WHERE dept_id =
+    (
+        SELECT dept_id
+        FROM Departments
+        WHERE dept_name = 'IT'
+    )
+);
+
+
+/* Q3 - Total salary spent by each department */
+
+SELECT dept.dept_name,
+       SUM(emp.salary) AS Department_Salary
+FROM Departments dept
+JOIN Employees emp
+     ON dept.dept_id = emp.dept_id
+GROUP BY dept.dept_name;
+
+
+/* Q4 - Departments with more than 2 employees and avg salary > 70000 */
+
+SELECT dept.dept_name,
+       COUNT(*) AS Employee_Count,
+       AVG(emp.salary) AS Average_Salary
+FROM Employees emp
+JOIN Departments dept
+     ON emp.dept_id = dept.dept_id
+GROUP BY dept.dept_name
+HAVING COUNT(*) > 2
+   AND AVG(emp.salary) > 70000;
+
+
+/* Q5 - Employee and Manager names */
+
+SELECT emp.name AS Employee,
+       mgr.name AS Manager
+FROM Employees emp
+LEFT OUTER JOIN Employees mgr
+ON emp.manager_id = mgr.emp_id;
+
+
+/* Q6 - Top 3 highest earners */
+
+SELECT name,
+       salary
+FROM Employees
+ORDER BY salary DESC
+LIMIT 3;
+
+
+/* Q7 - Developers working in San Francisco */
+
+SELECT emp.name,
+       jb.job_title,
+       dept.location
+FROM Employees emp
+INNER JOIN Jobs jb
+        ON jb.job_id = emp.job_id
+INNER JOIN Departments dept
+        ON dept.dept_id = emp.dept_id
+WHERE dept.location = 'San Francisco'
+AND jb.job_title = 'Developer';
+
+
+/* Q8 - Employee hiring count year-wise */
+
+SELECT YEAR(hire_date) AS Hiring_Year,
+       COUNT(*) AS Employees_Hired
+FROM Employees
+GROUP BY YEAR(hire_date);
+
+
+/* Q9 - Job roles with maximum salary below 100000 */
+
+SELECT jb.job_title,
+       MAX(emp.salary) AS Highest_Salary
+FROM Jobs jb
+JOIN Employees emp
+     ON jb.job_id = emp.job_id
+GROUP BY jb.job_title
+HAVING MAX(emp.salary) < 100000;
+
+
+/* Q10 - Employees in David's department */
+
+SELECT name
+FROM Employees
+WHERE dept_id =
+(
+    SELECT dept_id
+    FROM Employees
+    WHERE name = 'David'
+);
+
+
+/* Q12 - Employees hired between 2018 and 2020 earning above 60000 */
+
+SELECT name,
+       salary,
+       hire_date
+FROM Employees
+WHERE salary > 60000
+AND hire_date BETWEEN '2018-01-01' AND '2020-12-31';
+
+
+/* Q13 - Employees earning above their department average */
+
+SELECT e.name,
+       e.salary,
+       e.dept_id
+FROM Employees e
+WHERE e.salary >
+(
+    SELECT AVG(x.salary)
+    FROM Employees x
+    WHERE x.dept_id = e.dept_id
+);
+
+
+/* Q14 - Details of employee with ID 504 */
+
+SELECT e.name,
+       j.job_title,
+       e.salary
+FROM Jobs j
+JOIN Employees e
+     ON j.job_id = e.job_id
+WHERE e.emp_id = 504;
+
+
+/* Q15 - Lowest salary under each manager */
+
+SELECT manager_id,
+       MIN(salary) AS Lowest_Salary
+FROM Employees
+WHERE manager_id IS NOT NULL
+GROUP BY manager_id;
+
+
+/* Q16 - Departments without Analysts */
+
+SELECT dept_name
+FROM Departments
+WHERE dept_id NOT IN
+(
+    SELECT e.dept_id
+    FROM Employees e
+    INNER JOIN Jobs j
+            ON e.job_id = j.job_id
+    WHERE j.job_title = 'Analyst'
+);
+
+
+/* Q17 - Salary range in the company */
+
+SELECT (MAX(salary) - MIN(salary)) AS Salary_Range
+FROM Employees;
+
+
+/* Q19 - Managers supervising more than 2 employees */
+
+SELECT manager_id,
+       COUNT(*) AS Team_Size
+FROM Employees
+WHERE manager_id IS NOT NULL
+GROUP BY manager_id
+HAVING COUNT(*) > 2;
+
+
+/* Q20 - Employee(s) having third highest salary */
+
+SELECT name,
+       salary
+FROM Employees
+WHERE salary =
+(
+    SELECT DISTINCT salary
+    FROM Employees
+    ORDER BY salary DESC
+    LIMIT 2,1
+);
+
+
+/* Q22 - Finance employees whose names contain 'i' */
+
+SELECT e.name
+FROM Departments d
+JOIN Employees e
+     ON d.dept_id = e.dept_id
+WHERE d.dept_name = 'Finance'
+AND e.name LIKE '%i%';
+
+
+/* Q23 - Total 10% bonus department-wise */
+
+SELECT d.dept_name,
+       SUM(0.10 * e.salary) AS Bonus_Total
+FROM Employees e
+INNER JOIN Departments d
+        ON e.dept_id = d.dept_id
+GROUP BY d.dept_name;
+
+
+/* Q24 - Department with highest salary payout */
+
+SELECT dept_name
+FROM Departments
+WHERE dept_id =
+(
+    SELECT dept_id
+    FROM Employees
+    GROUP BY dept_id
+    ORDER BY SUM(salary) DESC
+    LIMIT 1
+);
+
+
+/* Q25 - Employees reporting to Charlie */
+
+SELECT emp.name AS Staff_Name
+FROM Employees emp
+INNER JOIN Employees mgr
+        ON emp.manager_id = mgr.emp_id
+WHERE mgr.name = 'Charlie';
